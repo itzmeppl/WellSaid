@@ -3,7 +3,7 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-router-dom';
 import { useState } from 'react';
-import virtualDoctor from './virtual-doctor';
+import VirtualDoctor from './virtual-doctor';
 
   const Home = ({msgs, question, handleChange, handleSubmit}) => {
     return(
@@ -63,7 +63,7 @@ function App() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           />} />
-          <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
+          <Route path="/virtual-doctor" element={<VirtualDoctor/>} />
           <Route path="*" element={<h2>404 Not Found</h2>} />
         </Routes>
       </Router>
