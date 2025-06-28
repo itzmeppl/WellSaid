@@ -1,0 +1,11 @@
+Doctor Name,Clinic Name,Specialty,Languages,Location,Plans
+David Lee,Adelaide Health Clinic,chiropractic,English,"First Canadian Place, 1, Toronto, ON M5K 1C8",UHIP
+Sylvain A. Rene,Davisville Medical Clinic,general,"English, French","1901 Yonge Street, Unit 4, Toronto, ON, M4S 1Y6",Annual Fee
+Jessica Chen,Mandarin Clinic,"general, dentistry","English, Mandarin, Cantonese","1 Main Street, Unit 11, Toronto, M1M 1M1",Canadian Dental Care
+Alisa Naiman,Forest Hill Family Health Clinic,family medicine,"English, Russian","491 Eglinton Ave West, Second Floor, Toronto, Ontario M5N 1A8",Annual Fee
+Raj Dayanathan,Urban Health Clinic,optometry,"English, Tamil","5 Stair Street, Unit 55, Markham, Ontario, L5M 2J9",Vision Care
+Mandy Zhou,Dundas General Clinic,general,"English, Cantonese","88 New Street, North York, Ontario, M2N L8L",UHIP
+Avery Shen,Brimley Family Clinic,general,"English, French","3333 Brimley Rd #2, Scarborough, ON M1V 2J7",Senior Health Care
+Raymond Fung,Michael Garron Hospital,"general, endocrinology","English, Mandarin","825 Coxwell Ave, East York, ON M4C 3E7",IFHP
+Gustave Fring,Scarborough General Hospital,"general, mental health","English, French, Spanish","3050 Lawrence Ave E, Scarborough, ON M1P 2V5",Immigrants Health
+Aria Cappuri,Toronto General Hospital,"general, family medicine, endocrinology","English, Italian","200 Elizabeth St, Toronto, ON M5G 2C4",UHIP
