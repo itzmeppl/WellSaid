@@ -1,81 +1,106 @@
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
+const cors = require('cors');
 const { Server } = require('socket.io');
-const {GoogleGenAI} = require('@google/genai');
-require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000', // match frontend
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
-const ai = new GoogleGenAI({});
-
-const users = new Map();
-
+const io = new Server(server);
+app.use(cors());
+app.use(express.json());
 app.use(express.static('public'));
 
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const users = new Map();
+
 io.on('connection', (socket) => {
-    console.log('A user connected:', socket.id);
+  console.log('A user connected:', socket.id);
 
-    socket.on('register', (username) => {
-        users.set(socket.id, username);
-        socket.username = username;
-        console.log(`User registered: ${username} with ID ${socket.id}`);
-    });
+  socket.on('register', (username) => {
+    users.set(socket.id, username);
+    socket.username = username;
+    console.log(`User registered: ${username} with ID ${socket.id}`);
+  });
 
-    socket.on('direct message', async ({content, to}) => {
-        console.log(`Direct message from ${socket.username} to ${to}: ${content}`);
-        
-        if (to.toLowerCase() === 'gemini'){
-            const reply = await callGeminiAPI(content);
-            socket.emit('direct message', 
-                { content: reply, from: 'Gemini', 
-                    timestamp: new Date().toISOString()});
-        
-            return;
-        }         
+  socket.on('direct message', async ({ content, to }) => {
+    console.log(`Direct message from ${socket.username} to ${to}: ${content}`);
 
-        const recipientSocketId = Array.from(users.keys()).find(id => users.get(id) === to);
-        if (recipientSocketId) {
-            io.to(recipientSocketId).emit('direct message', {
-                content,
-                from: socket.username,
-                timestamp: new Date().toISOString()
-            });
-            console.log(`Message sent to ${to}: ${content}`);
-        }
-    });
+    if (to.toLowerCase() === 'gemini') {
+      try {
+        const geminiReply = await callGeminiAPI(content);
+        socket.emit('direct message', {
+          content: geminiReply,
+          from: 'Gemini',
+          timestamp: new Date().toISOString(),
+        });
+      } catch (err) {
+        socket.emit('direct message', {
+          content: 'Error talking to Gemini.',
+          from: 'Gemini',
+        });
+      }
+      return;
+    }
 
-    socket.on('disconnect', () => {
-        console.log(`User disconnected: ${socket.id}`);
-        users.delete(socket.id);
-    });
+    const recipientSocketId = Array.from(users.keys()).find(id => users.get(id) === to);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit('direct message', {
+        content,
+        from: socket.username,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`User disconnected: ${socket.id}`);
+    users.delete(socket.id);
+  });
 });
 
-async function callGeminiAPI(content) {
-  try {
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' }); // or 2.0 if supported
-    const result = await model.generateContent([
-      { role: 'user', parts: [{ text: content }] }
-    ]);
 
-    const response = await result.response;
-    const text = await response.text();
+async function callGeminiAPI(promptText) {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    return text;
-  } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    return "Sorry, there was a problem getting a response from Gemini.";
+  const body = {
+    contents: [
+      {
+        parts: [{ text: promptText }],
+      },
+    ],
+  };
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Gemini API error: ${err}`);
   }
+
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
 }
 
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => { 
-    console.log(`Server is running on port ${PORT}`);
+app.post('/api/ask', async (req, res) => {
+  const { question } = req.body;
+  try {
+    const reply = await callGeminiAPI(question);
+    res.json({ reply });
+  } catch (err) {
+    console.error('Gemini error:', err.message);
+    res.status(500).json({ error: 'Failed to call Gemini API' });
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
