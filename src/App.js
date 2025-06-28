@@ -1,9 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-router-dom';
 import { useState } from 'react';
-import VirtualDoctor from './virtual-doctor';
+import axios from 'axios';
 
   const Home = ({msgs, question, handleChange, handleSubmit}) => {
     return(
@@ -40,6 +39,17 @@ function App() {
   const handleSubmit = (event) => {
     const newMsg = { role: 'user', content: question };
     setMsgs([...msgs, newMsg]);
+
+    axios.post('http://localhost:5000/api/ask', { question })
+      .then(response => {
+        const aiResponse = response.data.reply;
+        const aiMsg = { role: 'assistant', content: aiResponse };
+        setMsgs(prevMsgs => [...prevMsgs, newMsg, aiMsg]);
+        console.log('AI Response:', aiResponse);
+      })
+      .catch(error => {
+        console.error('Error fetching AI response:', error);
+      });
     setQuestion('');
   };
   
@@ -63,7 +73,7 @@ function App() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           />} />
-          <Route path="/virtual-doctor" element={<VirtualDoctor/>} />
+          <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
           <Route path="*" element={<h2>404 Not Found</h2>} />
         </Routes>
       </Router>
