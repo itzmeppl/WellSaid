@@ -1,12 +1,15 @@
+const { Server } = require('socket.io');
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
-const { Server } = require('socket.io');
-const {GoogleGenAI} = require('@google/genai');
+
+const {GoogleGenerativeAI} = require('@google/generative-ai');
+
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const users = new Map();
 
@@ -52,17 +55,14 @@ io.on('connection', (socket) => {
 
 async function callGeminiAPI(content) {
     try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
-            contents: content,
+        const model = ai.getGenerativeModel({
+            model: 'gemini-1.5-flash',
         });
 
-        if (!response.ok) {
-            throw new Error(`Error from Gemini API: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return data.response;
+        const result = await model.generateContent(content);      
+        const response = result.response;
+        console.log('Gemini API response:', response.text());
+        return response.text();
     } catch (error) {
         console.error('Error calling Gemini API:', error);
         throw error;
