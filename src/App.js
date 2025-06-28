@@ -38,7 +38,6 @@ function App() {
 
   const handleSubmit = (event) => {
     const newMsg = { role: 'user', content: question };
-    setMsgs([...msgs, newMsg]);
 
     axios.post('http://localhost:5000/api/ask', { question })
       .then(response => {

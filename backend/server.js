@@ -3,6 +3,8 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
+const franc = require('franc');
+const langs = require('langs');
 
 const app = express();
 const server = http.createServer(app);
@@ -26,9 +28,19 @@ io.on('connection', (socket) => {
   socket.on('direct message', async ({ content, to }) => {
     console.log(`Direct message from ${socket.username} to ${to}: ${content}`);
 
+    // Language autodetection
+    let langInstruction = '';
+    const langCode = franc(content);
+    if (langCode && langCode !== 'und') {
+      const lang = langs.where('3', langCode);
+      if (lang && lang.name) {
+        langInstruction = `Reply in this language: ${lang.name}.`;
+      }
+    }
+
     if (to.toLowerCase() === 'gemini') {
       try {
-        const geminiReply = await callGeminiAPI(content);
+        const geminiReply = await callGeminiAPI(content, langInstruction);
         socket.emit('direct message', {
           content: geminiReply,
           from: 'Gemini',
@@ -60,13 +72,13 @@ io.on('connection', (socket) => {
 });
 
 
-async function callGeminiAPI(promptText) {
+async function callGeminiAPI(promptText, langInstruction = '') {
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   const body = {
     contents: [
       {
-        parts: [{ text: promptText }],
+        parts: [{ text: langInstruction ? `${langInstruction}\n${promptText}` : promptText }],
       },
     ],
   };
