@@ -10,6 +10,10 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.10.0",
     "cors": "^2.8.5",
+<<<<<<< Updated upstream
+=======
+    "dotenv": "^17.0.0",
+>>>>>>> Stashed changes
     "express": "^5.1.0",
     "franc": "^6.2.0",
     "langs": "^2.0.0",
