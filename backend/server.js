@@ -3,9 +3,8 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { Server } = require('socket.io');
-const franc = require('franc');
+const franc = import('franc').then(mod => mod.default);
 const langs = require('langs');
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -71,6 +70,16 @@ io.on('connection', (socket) => {
   });
 });
 
+app.get('/api/getOffers', async (req, res) => {
+  try {
+    const db = await require('./db').connectDB();
+    const offers = await db.collection('offers').find({}).toArray();  
+    res.json(offers);
+  } catch (error) {
+    console.error('Error fetching offers:', error);
+    res.status(500).json({ error: 'Failed to fetch offers' });
+  }
+});
 
 async function callGeminiAPI(promptText, langInstruction = '') {
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;

@@ -20,7 +20,7 @@ async function connectDB() {
     if (!db) {
       await client.connect();
       await client.db("admin").command({ ping: 1 });
-      db = await client.db("weather_calendar_db");
+      db = await client.db("db");
       console.log("Pinged your deployment. You successfully connected to MongoDB!");
     }
   } catch (error) {
