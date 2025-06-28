@@ -63,6 +63,7 @@ function App() {
             {/* <li><a href="/">Home (reloads)</a></li> */}
             <li><Link to="/">Ask Me</Link></li>
             <li><Link to="/virtual-doctor">Virtual Doctor</Link></li>
+            <li><Link to="/offers">Offers</Link></li>
           </ul>
         </nav>
         <Routes>
