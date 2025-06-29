@@ -49,25 +49,29 @@ const VirtualDoctor = () => {
     };
 
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Virtual Doctor</h2>
-            <button onClick={() => navigate('/doctor')}>Doctor Login</button>
-            <p>Connect to a virtual doctor for health-related queries.</p>
-            <p>Ask your health-related questions and get answers from a virtual doctor.</p>
+        <div className="virtual-doctor" style={{ padding: 20 }}>
+            <h2 className="virtual-doctor-title">Virtual Doctor</h2>
+            <button className="doctor-button" onClick={() => navigate('/doctor')}>Doctor Login</button>
+            <div className="text">
+                <p>Connect to a virtual doctor for health-related queries.</p>
+                <p>Ask your health-related questions and get answers from a virtual doctor.</p>
+            </div>
 
             {!registered ? (
-                <div style={{ marginTop: 30 }}>
+                <div className="register">
                     <h3>Register</h3>
-                    <input
-                        id="username"
-                        placeholder="Your username"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
-                        style={{ marginRight: 10 }}
-                    />
-                    <button onClick={handleRegister} style={{ marginRight: 10 }}>
-                        Register
-                    </button>
+                    <div className = "register-form">
+                        <input
+                            id="username"
+                            placeholder="Your username"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                            style={{ marginRight: 10 }}
+                        />
+                        <button onClick={handleRegister} style={{ marginRight: 10 }}>
+                            Click to Find a Doctor!
+                        </button>
+                    </div>
                 </div>
             ) : (
                 <div style={{ marginTop: 30 }}>
