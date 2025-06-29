@@ -28,19 +28,48 @@ const Offers = () => {
     return <div>No offers available at the moment.</div>;
   }
 
-  return (
+const styles = {
+  card: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '16px',
+    padding: '16px',
+    border: '1px solid #ccc',
+    borderRadius: '12px',
+    marginBottom: '16px',
+    backgroundColor: '#rgb(250, 228, 201)',
+  },
+  logo: {
+    width: '200px',
+    height: 'auto',
+    objectFit: 'contain',
+  },
+  content: {
+    flex: 1,
+  },
+};
+
+
+return (
     <div>
       <h2>Offers</h2>
-      <ul>
+      <ul style={{ listStyle: 'none', padding: 0 }}>
         {offers.map((offer) => (
-          <li key={offer._id}>
-            <img src={offer.clinic_logo} alt={offer.clinic_name} /> 
-            <p>{offer.doctor_type}</p>
-            <h3>{offer.clinic_name}</h3>
-            <p>{offer.location}</p>
-            <p>{offer.offer}</p>
-            <p>{offer.offer_description}</p>
-            
+          <li key={offer._id} style={styles.card}>
+            <img
+              src={offer.clinic_logo}
+              alt={offer.clinic_name}
+              style={styles.logo}
+            />
+            <div style={styles.content}>
+              <h3 style={{ fontWeight: 'bold', marginBottom: '12px', fontSize: '25px' }}>
+                {offer.offer}
+              </h3>
+              <p style={{ marginTop: '6px', fontSize:'18px' }}>{offer.offer_description}</p>
+              <p style={{ margin: '4px 0', fontWeight: 'bold'}}>{offer.clinic_name}</p>
+              {/* <p style={{ margin: '2px 0' }}>{offer.doctor_type}</p> */}
+              <p style={{ margin: '2px 6px' }}>Address: {offer.location}</p>
+            </div>
           </li>
         ))}
       </ul>
