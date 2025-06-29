@@ -18,14 +18,14 @@ const Offers = () => {
       });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  console.log('Offers:', offers);
+  
+  if (loading) {
+    return <div>Loading offers...</div>;
+  }
+
   if (!offers.length) {
-    return (
-      <div>
-        <h2>No Offers Available</h2>
-        <p>Please check back later.</p>
-      </div>
-    );
+    return <div>No offers available at the moment.</div>;
   }
 
   return (
@@ -33,9 +33,14 @@ const Offers = () => {
       <h2>Offers</h2>
       <ul>
         {offers.map((offer) => (
-          <li key={offer.id}>
-            <h3>{offer.title}</h3>
-            <p>{offer.description}</p>
+          <li key={offer._id}>
+            <img src={offer.clinic_logo} alt={offer.clinic_name} /> 
+            <p>{offer.doctor_type}</p>
+            <h3>{offer.clinic_name}</h3>
+            <p>{offer.location}</p>
+            <p>{offer.offer}</p>
+            <p>{offer.offer_description}</p>
+            
           </li>
         ))}
       </ul>
