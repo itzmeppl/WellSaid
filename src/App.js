@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import Offers from './offers';
+import Offers from './Offers';
 
   const Home = ({msgs, question, handleChange, handleSubmit}) => {
     return(
