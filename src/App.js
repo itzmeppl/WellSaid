@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-rout
 import { useState } from 'react';
 import axios from 'axios';
 import Offers from './Offers';
+import VirtualDoctor from './virtual-doctor';
+import Doctor from './doctor';
 
   const Home = ({msgs, question, handleChange, handleSubmit}) => {
     return(
@@ -79,6 +81,7 @@ function App() {
           <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
           <Route path="/offers" element={<Offers/>} />
           <Route path="*" element={<h2>404 Not Found</h2>} />
+          <Route path="/doctor" element={<Doctor />} />
         </Routes>
       </Router>
     
