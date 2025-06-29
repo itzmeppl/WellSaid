@@ -7,10 +7,18 @@ const franc = import('franc').then(mod => mod.default);
 const langs = require('langs');
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const users = new Map();
@@ -60,7 +68,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log(`Uoffeser disconnected: ${socket.id}`);
+        console.log(`User disconnected: ${socket.id}`);
         users.delete(socket.id);
     });
 });
@@ -98,7 +106,8 @@ app.post('/api/doctorLogin', async (req, res) => {
 app.get('/api/getQueue', async (req, res) => {
     try {
         res.json(Array.from(users.values()));
-        console.log(Array.from(users.values()));
+        console.log("que: ")
+        console.log("Queue:", Array.from(users.values()));
     } catch (error) {  
         console.error("Error fetching queue:", error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -144,17 +153,6 @@ of medical clinics, professionals, and advice about benefits and plans. Use it t
   const data = await response.json();
   return data.candidates[0].content.parts[0].text;
 }
-
-app.get('/api/getOffers', async (req, res) => {
-  try {
-    const db = await require('./db').connectDB();
-    const offers = await db.collection('offers').find({}).toArray();
-    res.json(offers);
-  } catch (err) {
-    console.error('Error fetching offers:', err);
-    res.status(500).json({ error: 'Failed to fetch offers' });
-  } 
-}); 
 
 app.post('/api/ask', async (req, res) => {
   const { question } = req.body;

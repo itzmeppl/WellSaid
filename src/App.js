@@ -82,10 +82,10 @@ function App() {
             />
           }
         />
-        <Route path="/virtual-doctor" element={<main><h2>Connect to Virtual Doctor</h2></main>} />
+        <Route path="/virtual-doctor" element={<VirtualDoctor />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="*" element={<main><h2>404 Not Found</h2></main>} />
-        <Route path="/doctor" element = {<Doctor/>} />
+        <Route path="/doctor" element={<Doctor />} />
       </Routes>
     </Router>
   </div>
