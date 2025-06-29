@@ -90,7 +90,7 @@ async function callGeminiAPI(promptText, langInstruction = '') {
 \"Raymond Fung\",\"Michael Garron Hospital\",\"general, endocrinology\",\"English, Mandarin\",\"825 Coxwell Ave, East York, ON M4C 3E7\",\"IFHP\" \
 \"Gustave Fring\",\"Scarborough General Hospital\",\"general, mental health\",\"English, French, Spanish\",\"3050 Lawrence Ave E, Scarborough, ON M1P 2V5\",\"Immigrants Health\" \
 \"Aria Cappuri\",\"Toronto General Hospital\",\"general, family medicine, endocrinology\",\"English, Italian\",\"200 Elizabeth St, Toronto, ON M5G 2C4\",\"UHIP\", provide me a list \
-of medical clinics, professionals, and advice about benefits and plans. Use it to answer the following question: " + promptText + '. Ensure the answer prioritizes medical professionals that know the same language of the prompt and is in the original language of input. DO NOT SAY the English translation or repeat the user prompt if it\'s not necessary! NO YAPPING!'}],
+of medical clinics, professionals, and advice about benefits and plans. Use it to answer the following question: " + promptText + '. Ensure the answer prioritizes medical professionals that know the same language of the prompt and is in the original language of input. Do not repeat the user prompt if it\'s not necessary! NO YAPPING!'}],
       },
     ],
   };
