@@ -51,7 +51,7 @@ const styles = {
 
 
 return (
-    <div>
+    <div className="offers">
       <h2>Offers</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {offers.map((offer) => (

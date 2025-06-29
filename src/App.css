@@ -114,6 +114,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 50%;
 }
 
 #submit-btn:hover {
@@ -214,4 +215,42 @@ body {
   padding: 1%;
   font-size: 20px;
   margin-right: 5%;
+}
+
+.offers {
+  padding: 2%;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgb(250, 228, 201);
+}
+
+#chat-input-doctor{
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 100%; 
+  box-sizing: border-box;
+  display: block;
+}
+
+
+#submit-btn-doctor{
+  padding: 0.6rem 1.2rem;
+  background-color: #003366;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+#submit-btn:hover {
+  background-color: #002244;
 }

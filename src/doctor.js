@@ -34,6 +34,17 @@ const Doctor = () => {
             });
     };
 
+    const assignMessage = (msg, idx) =>
+        msg.from === "You" ? (
+            <li key={idx} className="chat-message user">
+                <strong>{msg.from}: </strong> {' ' + msg.content}
+            </li>
+        ) : (
+            <li key={idx} className="chat-message assistant">
+                <strong>{msg.from}: </strong> {' ' + msg.content}
+            </li>
+        );
+    
     useEffect(() => {
         if (verified) {
             axios.get('http://localhost:5000/api/getQueue')
@@ -89,8 +100,9 @@ const Doctor = () => {
     if (verified) {
         const currentPatient = patients[currentPatientIndex];
         return (
-            <div style={{ padding: 20 }}>
+            <div className="virtual-doctor" style={{ padding: 20 }}>
                 <h2>Doctor Dashboard</h2>
+                <div className='input-section'>
                 <h3>Current Patient</h3>
                 {currentPatient ? (
                     <>
@@ -100,31 +112,29 @@ const Doctor = () => {
                         </div>
                         <div>
                             <input
+                                id="chat-input-doctor"
                                 placeholder="Message"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 style={{ marginRight: 10 }}
                             />
-                            <button onClick={sendMessage}>Send</button>
+                            <button id="submit-btn-doctor" onClick={sendMessage}>Send</button>
 
-                            <ul style={{ marginTop: 20 }}>
-                                {chat.map((msg, idx) => (
-                                    <li key={idx}>
-                                        <strong>{msg.from}:</strong> {msg.content}
-                                    </li>
-                                ))}
+                            <ul id="chat-log" style={{ marginTop: 20 }}>
+                                {chat.map((msg, idx) => assignMessage(msg, idx))}
                             </ul>
                         </div>
                     </>
                 ) : (
                     <p>No Patients Left.</p>
                 )}
+                </div>
             </div>
         );
     }
 
     return (
-        <div style={{ padding: 20 }}>
+        <div className="virtual-doctor" style={{ padding: 20 }}>
             <h2>Doctor Login</h2>
             <p>Welcome to the Doctor's portal. Please log in to access your dashboard.</p>
             <input

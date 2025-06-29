@@ -31,6 +31,18 @@ const VirtualDoctor = () => {
         };
     }, []);
 
+    const assignMessage = (msg, idx) =>
+        msg.from === "You" ? (
+            <li key={idx} className="chat-message user">
+                <strong>{msg.from}:</strong> {' ' + msg.content}
+            </li>
+        ) : (
+            <li key={idx} className="chat-message assistant">
+                <strong>{msg.from}:</strong> {' ' + msg.content}
+            </li>
+        );
+
+
     const sendMessage = () => {
         if (!message || !recipient) return;
         socket.emit('direct message', { content: message, to: recipient });
@@ -74,7 +86,7 @@ const VirtualDoctor = () => {
                     </div>
                 </div>
             ) : (
-                <div style={{ marginTop: 30 }}>
+                <div className="input-section" style={{ marginTop: 30 }}>
                     <h3>Chat with Doctor</h3>
                     <p>Registered as: <strong>{username}</strong></p>
 
@@ -82,23 +94,20 @@ const VirtualDoctor = () => {
                         <>
                             <p>Connected to Doctor: <strong>{recipient}</strong></p>
                             <input
+                                id = "chat-input-doctor"
                                 placeholder="Message"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 style={{ marginRight: 10 }}
                             />
-                            <button onClick={sendMessage}>Send</button>
+                            <button id="submit-btn-doctor" onClick={sendMessage}>Send</button>
                         </>
                     ) : (
                         <p><em>Waiting for doctor...</em></p>
                     )}
 
-                    <ul style={{ marginTop: 20 }}>
-                        {chat.map((msg, idx) => (
-                            <li key={idx}>
-                                <strong>{msg.from}:</strong> {msg.content}
-                            </li>
-                        ))}
+                    <ul id="chat-log" style={{ marginTop: 20 }}>
+                        {chat.map((msg, idx) => assignMessage(msg, idx))}
                     </ul>
                 </div>
             )}
