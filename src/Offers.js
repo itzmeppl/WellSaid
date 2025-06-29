@@ -52,7 +52,7 @@ const styles = {
 
 return (
     <div>
-      <h2>Offers</h2>
+      <h1>Offers</h1>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {offers.map((offer) => (
           <li key={offer._id} style={styles.card}>
