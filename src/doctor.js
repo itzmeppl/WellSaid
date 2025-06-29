@@ -37,11 +37,11 @@ const Doctor = () => {
     const assignMessage = (msg, idx) =>
         msg.from === "You" ? (
             <li key={idx} className="chat-message user">
-                <strong>{msg.from}: </strong> {' ' + msg.content}
+                <strong>{msg.from}: </strong><span> </span> {' ' + msg.content}
             </li>
         ) : (
             <li key={idx} className="chat-message assistant">
-                <strong>{msg.from}: </strong> {' ' + msg.content}
+                <strong>{msg.from}: </strong><span> </span> {' ' + msg.content}
             </li>
         );
     
@@ -111,6 +111,11 @@ const Doctor = () => {
                             <button onClick={nextPatient}>Next Patient</button>
                         </div>
                         <div>
+                            
+
+                            <ul id="chat-log" style={{ marginTop: 20 }}>
+                                {chat.map((msg, idx) => assignMessage(msg, idx))}
+                            </ul>
                             <input
                                 id="chat-input-doctor"
                                 placeholder="Message"
@@ -119,10 +124,6 @@ const Doctor = () => {
                                 style={{ marginRight: 10 }}
                             />
                             <button id="submit-btn-doctor" onClick={sendMessage}>Send</button>
-
-                            <ul id="chat-log" style={{ marginTop: 20 }}>
-                                {chat.map((msg, idx) => assignMessage(msg, idx))}
-                            </ul>
                         </div>
                     </>
                 ) : (

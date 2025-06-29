@@ -89,10 +89,13 @@ const VirtualDoctor = () => {
                 <div className="input-section" style={{ marginTop: 30 }}>
                     <h3>Chat with Doctor</h3>
                     <p>Registered as: <strong>{username}</strong></p>
-
+                    <p>Connected to Doctor: <strong>{recipient}</strong></p>
+                    <ul id="chat-log" style={{ marginTop: 20 }}>
+                        {chat.map((msg, idx) => assignMessage(msg, idx))}
+                    </ul>
                     {recipient ? (
                         <>
-                            <p>Connected to Doctor: <strong>{recipient}</strong></p>
+                            
                             <input
                                 id = "chat-input-doctor"
                                 placeholder="Message"
@@ -106,9 +109,7 @@ const VirtualDoctor = () => {
                         <p><em>Waiting for doctor...</em></p>
                     )}
 
-                    <ul id="chat-log" style={{ marginTop: 20 }}>
-                        {chat.map((msg, idx) => assignMessage(msg, idx))}
-                    </ul>
+                    
                 </div>
             )}
         </div>
