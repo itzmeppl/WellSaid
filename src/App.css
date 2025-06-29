@@ -26,12 +26,12 @@
 .App-link {
   color: #61dafb;
 }
-.App-nav {
+/* .App-nav {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-bottom: 20px;
-}
+} */
 #wellsaid {
   font-family: "Garamond", Times, serif;
 }

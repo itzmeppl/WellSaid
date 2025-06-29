@@ -54,36 +54,40 @@ function App() {
       });
     setQuestion('');
   };
-  
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>WellSAID</h1>
-      </header>
-      <Router>
-        <nav>
-          <ul>
-            {/* <li><a href="/">Home (reloads)</a></li> */}
-            <li><Link to="/">Ask Me</Link></li>
-            <li><Link to="/virtual-doctor">Virtual Doctor</Link></li>
-            <li><Link to="/offers">Offers</Link></li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path="/" element={<Home
-          msgs={msgs}
-          question={question}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          />} />
-          <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
-          <Route path="/offers" element={<Offers/>} />
-          <Route path="*" element={<h2>404 Not Found</h2>} />
-        </Routes>
-      </Router>
-    
-    </div>
-  );
+  <div className="App">
+    <header className="App-header">
+      <h1 id="wellsaid">WellSaid</h1>
+    </header>
+
+    <Router>
+      <nav className="App-nav">
+        <h3><Link to="/">Ask Me</Link></h3>
+        <h3><Link to="/virtual-doctor">Virtual Doctor</Link></h3>
+        <h3><Link to="/offers">Offers</Link></h3>
+
+      </nav>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              msgs={msgs}
+              question={question}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+            />
+          }
+        />
+        <Route path="/virtual-doctor" element={<main><h2>Connect to Virtual Doctor</h2></main>} />
+        <Route path="/offers" element={<Offers />} />
+        <Route path="*" element={<main><h2>404 Not Found</h2></main>} />
+      </Routes>
+    </Router>
+  </div>
+);
+
 }
 
 export default App;
