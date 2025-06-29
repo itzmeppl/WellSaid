@@ -3,31 +3,33 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-router-dom';
 import { useState } from 'react';
-import virtualDoctor from './virtual-doctor';
-
-  const Home = ({msgs, question, handleChange, handleSubmit}) => {
-    return(
-      <main>
-        <div>
-          <input type="text" placeholder="Ask a question..." value={question} onChange={handleChange} />
-          <button onClick={handleSubmit}>Submit</button>
-          <div className="response">
-            <p>Your response will appear here.</p>
-          </div>
+import VirtualDoctor from './virtual-doctor';
+import GetOffers from './offers';
+import Doctor from './doctor';
+// import axios from 'axios';
+const Home = ({ msgs, question, handleChange, handleSubmit }) => {
+  return (
+    <main>
+      <div>
+        <input type="text" placeholder="Ask a question..." value={question} onChange={handleChange} />
+        <button onClick={handleSubmit}>Submit</button>
+        <div className="response">
+          <p>Your response will appear here.</p>
         </div>
-        <div>
-          <h3>Messages</h3>
-          <ul>
-            {msgs.map((msg, index) => (
-              <li key={index}>
-                <strong>{msg.role}:</strong> {msg.content}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </main>
-    );
-  }
+      </div>
+      <div>
+        <h3>Messages</h3>
+        <ul>
+          {msgs.map((msg, index) => (
+            <li key={index}>
+              <strong>{msg.role}:</strong> {msg.content}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </main>
+  );
+}
 
 function App() {
   const [msgs, setMsgs] = useState([]);
@@ -42,7 +44,7 @@ function App() {
     setMsgs([...msgs, newMsg]);
     setQuestion('');
   };
-  
+
   return (
     <div className="App">
       <header className="App-header">
@@ -54,20 +56,24 @@ function App() {
             {/* <li><a href="/">Home (reloads)</a></li> */}
             <li><Link to="/">Ask Me</Link></li>
             <li><Link to="/virtual-doctor">Virtual Doctor</Link></li>
+            <li><Link to="/offers">Offers</Link></li>
           </ul>
         </nav>
         <Routes>
           <Route path="/" element={<Home
-          msgs={msgs}
-          question={question}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
+            msgs={msgs}
+            question={question}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
           />} />
-          <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
+          <Route path="/virtual-doctor" element={<VirtualDoctor />} />
+          <Route path="/offers" element={<GetOffers />} />
+          {/* Add more routes as needed */}
           <Route path="*" element={<h2>404 Not Found</h2>} />
+          <Route path="/doctor" element={<Doctor />} />
         </Routes>
       </Router>
-    
+
     </div>
   );
 }
