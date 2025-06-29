@@ -114,13 +114,11 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 50%;
 }
 
 #submit-btn:hover {
   background-color: #002244;
 }
-
 /* .messages-section {
   border-top: 1px solid #e0e0e0;
   padding-top: 1.5rem;
