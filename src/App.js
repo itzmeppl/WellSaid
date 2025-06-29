@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Routes, Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import Offers from './offers';
 
   const Home = ({msgs, question, handleChange, handleSubmit}) => {
     return(
@@ -74,6 +75,7 @@ function App() {
           handleSubmit={handleSubmit}
           />} />
           <Route path="/virtual-doctor" element={<h2>Connect to virtual doctor</h2>} />
+          <Route path="/offers" element={<Offers/>} />
           <Route path="*" element={<h2>404 Not Found</h2>} />
         </Routes>
       </Router>
