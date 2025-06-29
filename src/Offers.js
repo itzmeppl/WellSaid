@@ -37,10 +37,10 @@ const styles = {
     border: '1px solid #ccc',
     borderRadius: '12px',
     marginBottom: '16px',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#rgb(250, 228, 201)',
   },
   logo: {
-    width: '100px',
+    width: '200px',
     height: 'auto',
     objectFit: 'contain',
   },
@@ -62,13 +62,13 @@ return (
               style={styles.logo}
             />
             <div style={styles.content}>
-              <p style={{ fontWeight: 'bold', marginBottom: '4px' }}>
+              <h3 style={{ fontWeight: 'bold', marginBottom: '12px', fontSize: '25px' }}>
                 {offer.offer}
-              </p>
-              <h3 style={{ margin: '4px 0' }}>{offer.clinic_name}</h3>
-              <p style={{ margin: '2px 0' }}>{offer.doctor_type}</p>
-              <p style={{ margin: '2px 0' }}>{offer.location}</p>
-              <p style={{ marginTop: '6px' }}>{offer.offer_description}</p>
+              </h3>
+              <p style={{ marginTop: '6px', fontSize:'18px' }}>{offer.offer_description}</p>
+              <p style={{ margin: '4px 0', fontWeight: 'bold'}}>{offer.clinic_name}</p>
+              {/* <p style={{ margin: '2px 0' }}>{offer.doctor_type}</p> */}
+              <p style={{ margin: '2px 6px' }}>Address: {offer.location}</p>
             </div>
           </li>
         ))}
