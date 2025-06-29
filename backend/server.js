@@ -16,58 +16,53 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const users = new Map();
 
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+    console.log('A user connected:', socket.id);
 
-  socket.on('register', (username) => {
-    users.set(socket.id, username);
-    socket.username = username;
-    console.log(`User registered: ${username} with ID ${socket.id}`);
-  });
+    socket.on('register', (username) => {
+        users.set(socket.id, username);
+        socket.username = username;
+        console.log(`User registered: ${username} with ID ${socket.id}`);
+    });
 
-  socket.on('direct message', async ({ content, to }) => {
-    console.log(`Direct message from ${socket.username} to ${to}: ${content}`);
+    socket.on('direct message', async ({content, to}) => {
+        console.log(`Direct message from ${socket.username} to ${to}: ${content}`);
+        
+        if (to.toLowerCase() === 'gemini'){
+            const reply = await callGeminiAPI(content);
+            socket.emit('direct message', 
+                { content: reply, from: 'Gemini', 
+                    timestamp: new Date().toISOString()});
+        
+            return;
+        }         
 
-    // Language autodetection
-    let langInstruction = '';
-    const langCode = franc(content);
-    if (langCode && langCode !== 'und') {
-      const lang = langs.where('3', langCode);
-      if (lang && lang.name) {
-        langInstruction = `Reply in this language: ${lang.name}.`;
-      }
-    }
+        const recipientSocketId = Array.from(users.keys()).find(id => users.get(id) === to);
+        if (recipientSocketId) {
+            io.to(recipientSocketId).emit('direct message', {
+                content,
+                from: socket.username,
+                timestamp: new Date().toISOString()
+            });
+            console.log(`Message sent to ${to}: ${content}`);
+        }
+    });
 
-    if (to.toLowerCase() === 'gemini') {
-      try {
-        const geminiReply = await callGeminiAPI(content, langInstruction);
-        socket.emit('direct message', {
-          content: geminiReply,
-          from: 'Gemini',
-          timestamp: new Date().toISOString(),
-        });
-      } catch (err) {
-        socket.emit('direct message', {
-          content: 'Error talking to Gemini.',
-          from: 'Gemini',
-        });
-      }
-      return;
-    }
+    socket.on('setDoctor', ({doctor, patient}) => {
+        const recipientSocketId = Array.from(users.keys()).find(id => users.get(id) === patient);
+        if (recipientSocketId) {
+            io.to(recipientSocketId).emit('setDoctor', {
+                doctor,
+                from: socket.username,
+                timestamp: new Date().toISOString()
+            });
+            console.log(`Doctor set for patient ${patient}: ${doctor}`);
+        }
+    })
 
-    const recipientSocketId = Array.from(users.keys()).find(id => users.get(id) === to);
-    if (recipientSocketId) {
-      io.to(recipientSocketId).emit('direct message', {
-        content,
-        from: socket.username,
-        timestamp: new Date().toISOString(),
-      });
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
-    users.delete(socket.id);
-  });
+    socket.on('disconnect', () => {
+        console.log(`Uoffeser disconnected: ${socket.id}`);
+        users.delete(socket.id);
+    });
 });
 
 app.get('/api/getOffers', async (req, res) => {
@@ -79,6 +74,35 @@ app.get('/api/getOffers', async (req, res) => {
     console.error('Error fetching offers:', error);
     res.status(500).json({ error: 'Failed to fetch offers' });
   }
+});
+
+app.post('/api/doctorLogin', async (req, res) => {
+    console.log("here");
+    const { username, password } = req.body;
+    console.log('->', username, password);
+    console.log(process.env.DOCTORUSERNAME, process.env.DOCTORPASSWORD);
+    try {
+        if (username === process.env.DOCTORUSERNAME && password === process.env.DOCTORPASSWORD) {
+            res.status(200).json({ message: 'Login successful' });
+            console.log("Doctor login successful");
+        } else {
+            res.status(401).json({ message: 'Invalid credentials' });
+            console.log("Doctor login failed: Invalid credentials");
+        }
+    } catch (error) {
+        console.error("Error during doctor login:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/api/getQueue', async (req, res) => {
+    try {
+        res.json(Array.from(users.values()));
+        console.log(Array.from(users.values()));
+    } catch (error) {  
+        console.error("Error fetching queue:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 async function callGeminiAPI(promptText, langInstruction = '') {
