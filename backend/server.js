@@ -80,7 +80,7 @@ async function callGeminiAPI(promptText, langInstruction = '') {
   const body = {
     contents: [
       {
-        parts: [{ text: langInstruction ? `${langInstruction}\n${promptText}` : "Using the knowledge base: \"David Lee\",\"Adelaide Health Clinic\",\"chiropractic\",\"English\",\"First Canadian Place, 1, Toronto, ON M5K 1C8\",\"UHIP\" \
+        parts: [{ text: langInstruction ? `${langInstruction}\n${promptText}` : "Using the following knowledge base: \"David Lee\",\"Adelaide Health Clinic\",\"chiropractic\",\"English\",\"First Canadian Place, 1, Toronto, ON M5K 1C8\",\"UHIP\" \
 \"Sylvain A. Rene\",\"Davisville Medical Clinic\",\"general\",\"English, French\",\"1901 Yonge Street, Unit 4, Toronto, ON, M4S 1Y6\",\"Annual Fee\" \
 \"Jessica Chen\",\"Mandarin Clinic\",\"general, dentistry\",\"English, Mandarin, Cantonese\",\"1 Main Street, Unit 11, Toronto, M1M 1M1\",\"Canadian Dental Care\" \
 \"Alisa Naiman\",\"Forest Hill Family Health Clinic\",\"family medicine\",\"English, Russian\",\"491 Eglinton Ave West, Second Floor, Toronto, Ontario M5N 1A8\",\"Annual Fee\" \
@@ -90,7 +90,7 @@ async function callGeminiAPI(promptText, langInstruction = '') {
 \"Raymond Fung\",\"Michael Garron Hospital\",\"general, endocrinology\",\"English, Mandarin\",\"825 Coxwell Ave, East York, ON M4C 3E7\",\"IFHP\" \
 \"Gustave Fring\",\"Scarborough General Hospital\",\"general, mental health\",\"English, French, Spanish\",\"3050 Lawrence Ave E, Scarborough, ON M1P 2V5\",\"Immigrants Health\" \
 \"Aria Cappuri\",\"Toronto General Hospital\",\"general, family medicine, endocrinology\",\"English, Italian\",\"200 Elizabeth St, Toronto, ON M5G 2C4\",\"UHIP\", provide me a list \
-of medical clinics and professionals of the same language category as the word: " + lang + " and advice about benefits and plans. Use it to answer the question: " + promptText + ' and translate to the original language of input. No Yapping!'}],
+of medical clinics, professionals, and advice about benefits and plans. Use it to answer the following question: " + promptText + '. Ensure the answer prioritizes medical professionals that know the same language of the prompt and is in the original language of input. DO NOT SAY the English translation or repeat the user prompt if it\'s not necessary! NO YAPPING!'}],
       },
     ],
   };
