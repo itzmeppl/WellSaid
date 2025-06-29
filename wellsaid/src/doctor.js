@@ -40,7 +40,7 @@ const Doctor = () => {
                 .then(response => {
                     setPatients(response.data);
                     setCurrentPatientIndex(0); // reset to first patient
-                    socket.emit('setDoctor', {doctor: username, patient: response.data[0]});
+                    socket.emit('setDoctor', { doctor: username, patient: response.data[0] });
                 })
                 .catch(error => {
                     console.error('Error fetching queue:', error);
@@ -51,13 +51,13 @@ const Doctor = () => {
     const nextPatient = () => {
         setChat([]); // clear chat for the next patient
         if (currentPatientIndex < patients.length - 1 && patients[currentPatientIndex + 1] !== username) {
-            socket.emit('setDoctor', {doctor: username, patient: patients[currentPatientIndex + 1]});
+            socket.emit('setDoctor', { doctor: username, patient: patients[currentPatientIndex + 1] });
             setCurrentPatientIndex(currentPatientIndex + 1);
         } else {
             setPatients([]); // clear patients if no more left
             setCurrentPatientIndex(0);
-            
-            alert("No more patients in queue.");
+
+            // alert("No more patients in queue.");
         }
     };
 
@@ -88,39 +88,38 @@ const Doctor = () => {
 
     if (verified) {
         const currentPatient = patients[currentPatientIndex];
-
         return (
-            <>
-                <div style={{ padding: 20 }}>
-                    <h2>Doctor Dashboard</h2>
-                    <h3>Current Patient</h3>
-                    {currentPatient ? (
+            <div style={{ padding: 20 }}>
+                <h2>Doctor Dashboard</h2>
+                <h3>Current Patient</h3>
+                {currentPatient ? (
+                    <>
                         <div>
                             <p><strong>{currentPatient}</strong></p>
                             <button onClick={nextPatient}>Next Patient</button>
                         </div>
-                    ) : (
-                        <p>No patients in queue.</p>
-                    )}
-                </div>
-                <div>
-                    <input
-                        placeholder="Message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        style={{ marginRight: 10 }}
-                    />
-                    <button onClick={sendMessage}>Send</button>
+                        <div>
+                            <input
+                                placeholder="Message"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                style={{ marginRight: 10 }}
+                            />
+                            <button onClick={sendMessage}>Send</button>
 
-                    <ul style={{ marginTop: 20 }}>
-                        {chat.map((msg, idx) => (
-                            <li key={idx}>
-                                <strong>{msg.from}:</strong> {msg.content}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </>
+                            <ul style={{ marginTop: 20 }}>
+                                {chat.map((msg, idx) => (
+                                    <li key={idx}>
+                                        <strong>{msg.from}:</strong> {msg.content}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </>
+                ) : (
+                    <p>No Patients Left.</p>
+                )}
+            </div>
         );
     }
 
